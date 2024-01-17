@@ -20,7 +20,7 @@ public class AyoRules extends GameRules{
     public int moveStones(final int startPit, final int playerNum) throws InvalidMoveException {
         try{
             validatePitBounds(startPit);
-        }catch (PitNotFoundException e){
+        }catch (InvalidMoveException e){
 
         }
 
@@ -32,22 +32,21 @@ public class AyoRules extends GameRules{
         return stonesAdded;
     }
 
-    private void validatePitBounds(final int startPit) throws PitNotFoundException {
+    private void validatePitBounds(final int startPit) throws InvalidMoveException {
         if (startPit < LOW_PIT || startPit > HI_PIT) {
-            throw new PitNotFoundException("Pit out of bounds.");
+            throw new InvalidMoveException();
         }
     }
     
-    /* 
-    private int getPitAtIndex(int startPit) throws InvalidMoveException {
-        return getDataStructure().getNumStones(startPit - 1);
-    }
-    */
     private void validatePitOwnership(final int startPit, final int playerNum) throws InvalidMoveException {
         if ((startPit >= 7 && startPit <= HI_PIT && playerNum == pNum1) ||
             (startPit >= LOW_PIT && startPit <= 6 && playerNum == pNum2)) {
             throw new InvalidMoveException("Select a pit on your side.");
         }
+        /*else{
+            getDataStructure().setSkipPit(startPit);
+        }
+        */
     }
     private void validateNonEmptyPit(final int pitNum) throws InvalidMoveException {
         if (getDataStructure().getNumStones(pitNum) == 0) {
